@@ -2,9 +2,11 @@ import React, {useState} from 'react'
 
 function InputField(props){
   let [data, getData] = useState('')
-  const {addTodo} = props
+  const addTodo = props.addTodo
   const emitData = () => {
+    console.log('data:', data,'addtodo:', addTodo)
     addTodo(data)
+    getData('')
   }
   return (
     <div>

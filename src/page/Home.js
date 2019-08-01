@@ -3,9 +3,11 @@ import List from '../components/List'
 import InputField from '../components/InputField'
 
 function Home(){
-  let [todos, renderList] = useState(['a','b','c'])
+  let [todos, resetList] = useState(['a','b','c'])
   let setData = (data) => {
-    renderList(todos.unshift(data))
+    let allTodo = [...todos]
+    allTodo.unshift(data)
+    resetList(allTodo)
   }
   return (
     <div>
