@@ -9,7 +9,7 @@ function Home(){
   }
   return (
     <div>
-      <InputField renderList={setData}/>
+      <InputField addTodo={setData}/>
       <List todoList={todos}/>
     </div>
   )
