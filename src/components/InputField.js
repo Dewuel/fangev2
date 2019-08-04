@@ -1,11 +1,18 @@
 import React, {useState} from 'react'
+import instance from '../utils/http'
 
 function InputField(props){
   let [data, getData] = useState('')
   const addTodo = props.addTodo
   const emitData = () => {
+    if(data === '') return;
     addTodo(data)
     getData('')
+    instance.post('/todos').then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
   }
   return (
     <div>
