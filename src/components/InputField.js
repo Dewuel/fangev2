@@ -8,7 +8,7 @@ function InputField(props){
     if(data === '') return;
     addTodo(data)
     getData('')
-    instance.post('/todos').then(res => {
+    instance.post('/add',{data}).then(res => {
       console.log(res)
     }).catch(err => {
       console.log(err)

@@ -8,10 +8,11 @@ const instance = axios.create({
   },
   baseURL: 'http://127.0.0.1:5000/api'
 })
-instance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+// instance.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('token')
 
 //添加请求拦截
 instance.interceptors.request.use(function(config){
+  config.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('token')
   return config
 }, function(err){
   console.log('请求超时')
