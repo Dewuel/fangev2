@@ -15,7 +15,7 @@ instance.interceptors.request.use(function(config){
   config.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('token')
   return config
 }, function(err){
-  console.log('请求超时')
+  console.log('无token')
   return Promise.reject(err)
 });
 

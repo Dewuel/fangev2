@@ -17,7 +17,7 @@ function InputField(props){
   return (
     <div>
       <input value={data} onChange={(e) => getData(e.target.value)} type="text"/>
-      <button onClick={emitData}>add</button>
+      <button onClick={emitData}>添加</button>
     </div>
   )
 }
