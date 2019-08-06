@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import instance from '../utils/http'
+import { Input, Button } from 'antd';
+import '../assets/styles/common/inputfield.scss'
 
 function InputField(props){
   let [data, getData] = useState('')
@@ -15,9 +17,9 @@ function InputField(props){
     })
   }
   return (
-    <div>
-      <input value={data} onChange={(e) => getData(e.target.value)} type="text"/>
-      <button onClick={emitData}>添加</button>
+    <div className="todo-input">
+      <Input value={data} onChange={(e) => getData(e.target.value)} type="text"/>
+      <Button className="btn" block type="primary" onClick={emitData}>添加</Button>
     </div>
   )
 }
