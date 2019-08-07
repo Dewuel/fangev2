@@ -52,7 +52,6 @@ function NormalLoginForm(props) {
     </Form>
   )
 }
-
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
 
 export default WrappedNormalLoginForm
