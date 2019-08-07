@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 // import {useState} from 'react'
 import Home from './page/Home'
-// import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import NormalLoginForm from './page/FormArea';
 /* <Router>
         <div>
           <Link to="/">首页</Link>
@@ -18,7 +19,10 @@ function App() {
 
   return (
     <div className="App">
-      <Home />
+      <Router>
+        <Route path="/" exact component={Home}/>
+        <Route path="/login" component={NormalLoginForm} />
+      </Router>
     </div>
   );
 }

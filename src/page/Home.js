@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import List from '../components/List'
 import InputField from '../components/InputField'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import '../assets/styles/home.scss';
+import {BrowserRouter as Router, Link} from 'react-router-dom'
+import instance from '../utils/http';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 function Home() {
+  let [isLogin, ChangeLogin] = useState(false)
+  let [userinfo, getUserInfo] = useState([])
   let [todos, resetList] = useState(['a', 'b', 'c'])
   let [collapsed,Collapse ] = useState(false)
   let setData = (data) => {
@@ -15,6 +19,18 @@ function Home() {
     allTodo.unshift(data)
     resetList(allTodo)
   }
+  useEffect(() => {
+    instance.get('/user/userinfo').then(res => {
+      const {code,data} = res.data
+      if(code === 200){
+        ChangeLogin(true)
+        getUserInfo(data)
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  })
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={(collapsed) => Collapse(collapsed)}>
@@ -60,7 +76,13 @@ function Home() {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 }} />
+        <Header style={{ background: '#fff', padding: 0 }}>
+          <Router>
+            <div>
+              {isLogin ? <div>{userinfo}</div> : <Link to="/login">登录</Link>}
+            </div>
+          </Router>
+        </Header>
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
