@@ -1,0 +1,29 @@
+// #components-form-demo-normal-login .login-form {
+//   max-width: 300px;
+//   box-sizing: border-box;
+//   padding: 10px;
+//   border: 1px solid #ccc;
+//   box-shadow: 2px 2px 3px #ccc;
+// }
+// #components-form-demo-normal-login .login-form-forgot {
+//   float: right;
+// }
+// #components-form-demo-normal-login .login-form-button {
+//   width: 100%;
+// }
+.login-form{
+  max-width: 400px;
+  box-sizing: border-box;
+  padding: 20px;
+  // border: 1px solid #ccc;
+  box-shadow: 0 0 10px 10px #ccc;
+  margin: 80px auto;
+  border-radius: 4px;
+  .login-form-forgot{
+    float: left;
+    margin-right: 40px;
+  }
+  .login-form-button{
+    width: 100%;
+  }
+}

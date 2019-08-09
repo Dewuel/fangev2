@@ -1,6 +1,7 @@
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import '../assets/styles/common/login.scss'
+import '../assets/styles/login.scss';
 import React from 'react'
+import instance from '../utils/http'
 
 function NormalLoginForm(props) {
   let handleSubmit = e => {
@@ -8,6 +9,12 @@ function NormalLoginForm(props) {
     props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        instance.post('/signin', values).then(res => {
+          console.log(res)
+          let userinfo = res.data.data
+          sessionStorage.setItem('userinfo', JSON.stringify(userinfo))
+          window.location.href = '/'
+        })
       }
     });
   }
@@ -16,12 +23,21 @@ function NormalLoginForm(props) {
   return (
     <Form onSubmit={handleSubmit} className="login-form">
       <Form.Item>
-        {getFieldDecorator('username', {
-          rules: [{ required: true, message: 'Please input your username!' }],
+        {getFieldDecorator('email', {
+          rules: [
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
+              required: true,
+              message: 'Please input your E-mail!',
+            },
+          ],
         })(
           <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Username"
+            placeholder="emial"
           />,
         )}
       </Form.Item>
