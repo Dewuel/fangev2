@@ -1,20 +1,30 @@
-import React, { useState } from 'react'
-import List from '../components/List'
-import InputField from '../components/InputField'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { Layout, Menu, Breadcrumb, Icon, Avatar } from 'antd';
 import '../assets/styles/home.scss';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import instance from '../utils/http';
+import AddTodo from '../components/addTodo';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 function Home() {
-  let [todos, resetList] = useState(['a', 'b', 'c'])
-  let [collapsed,Collapse ] = useState(false)
-  let setData = (data) => {
-    let allTodo = [...todos]
-    allTodo.unshift(data)
-    resetList(allTodo)
-  }
+  let [isLogin, ChangeLogin] = useState(false)
+  let [userinfo, getUserInfo] = useState([])
+  let [collapsed, Collapse] = useState(false)
+
+  useEffect(() => {
+    instance.get('/userinfo').then(res => {
+      const { code, data } = res.data
+      if (code === 200) {
+        ChangeLogin(true)
+        getUserInfo(data)
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }, [])
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={(collapsed) => Collapse(collapsed)}>
@@ -22,11 +32,11 @@ function Home() {
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
           <Menu.Item key="1">
             <Icon type="pie-chart" />
-            <span>Option 1</span>
+            <span><Link style={{ color: '#fff' }} to="/">新增</Link></span>
           </Menu.Item>
           <Menu.Item key="2">
             <Icon type="desktop" />
-            <span>Option 2</span>
+            <span><Link to="/list" style={{ color: '#fff' }}>列表</Link></span>
           </Menu.Item>
           <SubMenu
             key="sub1"
@@ -60,15 +70,21 @@ function Home() {
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ background: '#fff', padding: 0 }} />
+        <Header style={{ background: '#fff', padding: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '5vh' }}>
+            {isLogin ? <div><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{userinfo['name']}<span><a href="/logout">[登出]</a></span></div> : <a href="/login">登录</a>}
+          </div>
+        </Header>
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-            <InputField addTodo={setData} />
-            <List todoList={todos} />
+            {/*  */}
+            <Router>
+            <Route path="/" exact component={AddTodo} />
+            </Router>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
