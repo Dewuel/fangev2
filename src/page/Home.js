@@ -3,12 +3,13 @@ import { Layout, Menu, Breadcrumb, Icon, Avatar } from 'antd';
 import '../assets/styles/home.scss';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import instance from '../utils/http';
-import AddTodo from '../components/addTodo';
+import InputField from './InputField';
+import List from './List'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-function Home() {
+function Home(props) {
   let [isLogin, ChangeLogin] = useState(false)
   let [userinfo, getUserInfo] = useState([])
   let [collapsed, Collapse] = useState(false)
@@ -24,6 +25,10 @@ function Home() {
       console.log(err)
     })
   }, [])
+  const Logout = () =>{
+    sessionStorage.removeItem('userinfo')
+    props.history.push('/logout')
+  }
 
   return (
     <Router>
@@ -33,7 +38,7 @@ function Home() {
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1">
               <Icon type="pie-chart" />
-              <span><Link style={{ color: '#fff' }} to="/">新增</Link></span>
+              <Link style={{ color: '#fff' }} to="/"><span>新增</span></Link>
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="desktop" />
@@ -73,7 +78,7 @@ function Home() {
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '5vh' }}>
-              {isLogin ? <div><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{userinfo['name']}<span><a href="/logout">[登出]</a></span></div> : <a href="/login">登录</a>}
+              {isLogin ? <div><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{userinfo['name']}<span onClick={Logout}>[登出]</span></div> : <a href="/login">登录</a>}
             </div>
           </Header>
           <Content style={{ margin: '0 16px' }}>
@@ -83,7 +88,8 @@ function Home() {
             </Breadcrumb>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               {/*  */}
-              <Route path="/" exact component={AddTodo} />
+              <Route path="/" exact component={InputField} />
+              <Route path="/list" exact component={List} />
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>

@@ -5,13 +5,12 @@ import '../assets/styles/common/inputfield.scss'
 
 function InputField(props) {
   let [data, getData] = useState('')
-  const { addTodo } = props
+  
   const emitData = () => {
     if (data === '') return;
-    addTodo(data)
-    getData('')
     instance.post('/add', { todo: data }).then(res => {
       console.log(res)
+      getData('')
     }).catch(err => {
       console.log(err)
     })
