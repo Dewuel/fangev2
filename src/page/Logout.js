@@ -1,11 +1,11 @@
 import React from 'react';
-import {BrowserRouter,Redirect} from 'react-router-dom'
 
-function Logout(){
+function Logout(props){
+  setTimeout(() => {
+    props.history.push('/login')
+  },500)
   return (
-    <BrowserRouter>
-      <Redirect to="/login" exact/>
-    </BrowserRouter>
+    <div>正在退出...</div>
   )
 }
 export default Logout

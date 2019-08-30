@@ -1,55 +1,67 @@
 import React, { useState, useEffect } from 'react'
 import { Layout, Menu, Breadcrumb, Icon, Avatar } from 'antd';
 import '../assets/styles/home.scss';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import instance from '../utils/http';
+import { BrowserRouter, Route, Link } from 'react-router-dom'
+// import instance from '../utils/http';
 import InputField from './InputField';
 import List from './List'
+import WrappedRegistrationForm from './AddAdmin'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 function Home(props) {
   let [isLogin, ChangeLogin] = useState(false)
-  let [userinfo, getUserInfo] = useState([])
+  let [userinfo, getUserInfo] = useState()
   let [collapsed, Collapse] = useState(false)
 
+  // getUserInfo(userInfo)
   useEffect(() => {
-    instance.get('/userinfo').then(res => {
-      const { code, data } = res.data
-      if (code === 200) {
-        ChangeLogin(true)
-        getUserInfo(data)
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+    let userInfo = JSON.parse(sessionStorage.getItem("userinfo"))
+    if (!userInfo) return;
+    ChangeLogin(true)
+    getUserInfo(userInfo)
   }, [])
-  const Logout = () =>{
+  // useEffect(() => {
+  //   instance.get('/userinfo').then(res => {
+  //     const { code, data } = res.data
+  //     if (code === 200) {
+  //       ChangeLogin(true)
+  //       getUserInfo(data)
+  //     }
+  //   }).catch(err => {
+  //     console.log(err)
+  //   })
+  // }, [])
+  const Logout = () => {
     sessionStorage.removeItem('userinfo')
     props.history.push('/logout')
   }
 
   return (
-    <Router>
+    <BrowserRouter>
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={collapsed} onCollapse={(collapsed) => Collapse(collapsed)}>
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1">
-              <Icon type="pie-chart" />
-              <Link style={{ color: '#fff' }} to="/"><span>新增</span></Link>
+              <Link to="/">
+                <Icon type="pie-chart" />
+                <span>新建</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="desktop" />
-              <span><Link to="/list" style={{ color: '#fff' }}>列表</Link></span>
+              <Link to="/list">
+                <Icon type="desktop" />
+                <span>列表</span>
+              </Link>
             </Menu.Item>
             <SubMenu
               key="sub1"
               title={
                 <span>
                   <Icon type="user" />
-                  <span>User</span>
+                  <span>SU管理员</span>
                 </span>
               }
             >
@@ -70,15 +82,17 @@ function Home(props) {
               <Menu.Item key="8">Team 2</Menu.Item>
             </SubMenu>
             <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
+              <Link to="/addAdmin">
+                <Icon type="file" />
+                <span>File</span>
+              </Link>
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '5vh' }}>
-              {isLogin ? <div><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{userinfo['name']}<span onClick={Logout}>[登出]</span></div> : <a href="/login">登录</a>}
+              {isLogin ? <div><Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />{userinfo.name}<span onClick={Logout}>[登出]</span></div> : <a href="/login">登录</a>}
             </div>
           </Header>
           <Content style={{ margin: '0 16px' }}>
@@ -89,13 +103,14 @@ function Home(props) {
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               {/*  */}
               <Route path="/" exact component={InputField} />
-              <Route path="/list" exact component={List} />
+              <Route path="/list/" component={List} />
+              <Route path='/addAdmin/' component={WrappedRegistrationForm} />
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
       </Layout>
-    </Router>
+    </BrowserRouter>
   )
 }
 

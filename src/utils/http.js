@@ -4,7 +4,7 @@ const instance = axios.create({
   xsrfCookieName: 'xsrf-token',
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    "content-type": "application/json",
   },
   baseURL: 'http://127.0.0.1:5000/api'
 });
@@ -31,8 +31,8 @@ instance.interceptors.request.use(function(config){
 instance.interceptors.response.use(data => {
   return data;
 }, err => {
-  if(err.response.status !== 200){
-    console.log('请求失败', err)
+  if(err.response.status !== 404){
+    console.log('不存在', err)
   }
   return Promise.reject(err)
 })

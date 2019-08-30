@@ -8,12 +8,12 @@ function NormalLoginForm(props) {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // console.log('Received values of form: ', values);
         instance.post('/signin', values).then(res => {
           console.log(res)
           let userinfo = res.data.data
           sessionStorage.setItem('userinfo', JSON.stringify(userinfo))
-          window.location.href = '/'
+          props.history.push('/')
         })
       }
     });
@@ -63,7 +63,6 @@ function NormalLoginForm(props) {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
           </Button>
-        Or <a href="/about">register now!</a>
       </Form.Item>
     </Form>
   )

@@ -9,9 +9,9 @@ function App() {
   return (
     <div className="App">
       <Router mode="hash">
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={Home}/>
         <Route path="/login" exact component={NormalLoginForm} />
-        <Route to="/logout" component={Logout}/>
+        <Route path="/logout" exact component={Logout}/>
       </Router>
     </div>
   );
